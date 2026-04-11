@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sangeet - Music App{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS - Dark Blue & Pink Theme -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">🎵 SANGEET</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto d-flex align-items-center flex-wrap">
+                    <!-- Search Form -->
+                    <form class="search-form" action="{% url 'home' %}" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search songs..." 
+                                   name="q" value="{{ request.GET.q }}">
+                            <button class="btn" type="submit">Search</button>
+                        </div>
+                    </form>
+                    
+                    <!-- Leaderboard Link -->
+                    <a class="nav-link" href="{% url 'leaderboard' %}">🏆 Leaderboard</a>
+                    
+                    <!-- Auth Links -->
+                    {% if user.is_authenticated %}
+                        <!-- Creator Links for Authenticated Users -->
+                        {% if user.creator_profile %}
+                            <!-- Creator User -->
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    {{ user.username }} ({{ user.creator_profile.total_points }} pts)
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark">
+                                    <li><a class="dropdown-item" href="{% url 'creator_dashboard' %}">📊 Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'upload_video' %}">📤 Upload Video</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <!-- Regular User -->
+                            <span class="text-white me-2">{{ user.username }}</span>
+                            <a class="nav-link" href="{% url 'become_creator' %}" style="color: var(--accent-pink) !important; font-weight: bold;">
+                                🎬 Become Creator
+                            </a>
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        {% endif %}
+                    {% else %}
+                        <!-- Anonymous User -->
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-main">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>🎵 Sangeet</h5>
+                    <p>Your favorite music streaming platform with beautiful UI and amazing features</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+                        <li><a href="{% url 'become_creator' %}">Become Creator</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Follow Us</h5>
+                    <p>
+                        <a href="#">Facebook</a> | 
+                        <a href="#">Twitter</a> | 
+                        <a href="#">Instagram</a>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2026 Sangeet Music. All rights reserved. 🎶</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

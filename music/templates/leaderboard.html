@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}Creator Leaderboard - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-5 mt-4">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1 style="color: var(--accent-pink); font-size: 3rem; margin-bottom: 1rem;">🏆 Creator Leaderboard</h1>
+                <p class="text-muted" style="font-size: 1.1rem;">Top creators competing for the highest points</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top 3 Podium -->
+    {% if top_creators %}
+    <div class="row mb-5">
+        <!-- 2nd Place (Left) -->
+        {% if top_creators|length >= 2 %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100" style="border-top: 5px solid #c0c0c0; transform: translateY(30px);">
+                <div class="card-body text-center p-5">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🥈</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2ND PLACE</h4>
+                    
+                    {% if top_creators.1.profile_image %}
+                        <img src="{{ top_creators.1.profile_image.url }}" alt="{{ top_creators.1.user.username }}" 
+                             style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 1rem 0; border: 3px solid #c0c0c0;">
+                    {% else %}
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #c0c0c0; display: flex; align-items: center; justify-content: center; margin: 1rem auto; color: white; font-size: 2.5rem;">
+                            👤
+                        </div>
+                    {% endif %}
+                    
+                    <h5 style="color: var(--text-light); margin-bottom: 0.5rem;">{{ top_creators.1.user.username }}</h5>
+                    <h3 style="color: #c0c0c0; font-weight: bold; margin-bottom: 0.5rem;">{{ top_creators.1.total_points }}</h3>
+                    <p class="text-muted mb-0">{{ top_creators.1.total_videos }} videos</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 1st Place (Center - Bigger) -->
+        {% if top_creators|length >= 1 %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100" style="border-top: 5px solid #ffd700; transform: scale(1.05);">
+                <div class="card-body text-center p-5">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👑</div>
+                    <h4 style="font-size: 1.3rem; margin-bottom: 0.5rem; color: #ffd700;">🥇 1ST PLACE</h4>
+                    
+                    {% if top_creators.0.profile_image %}
+                        <img src="{{ top_creators.0.profile_image.url }}" alt="{{ top_creators.0.user.username }}" 
+                             style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 1rem 0; border: 4px solid #ffd700;">
+                    {% else %}
+                        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #ffd700, #ffed4e); display: flex; align-items: center; justify-content: center; margin: 1rem auto; color: white; font-size: 3rem;">
+                            👤
+                        </div>
+                    {% endif %}
+                    
+                    <h5 style="color: #ffd700; font-weight: bold; font-size: 1.3rem; margin-bottom: 0.5rem;">{{ top_creators.0.user.username }}</h5>
+                    <h3 style="color: #ffd700; font-weight: bold; font-size: 2rem; margin-bottom: 0.5rem;">{{ top_creators.0.total_points }}</h3>
+                    <p class="text-muted mb-0">{{ top_creators.0.total_videos }} videos</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 3rd Place (Right) -->
+        {% if top_creators|length >= 3 %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100" style="border-top: 5px solid #cd7f32; transform: translateY(60px);">
+                <div class="card-body text-center p-5">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🥉</div>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3RD PLACE</h4>
+                    
+                    {% if top_creators.2.profile_image %}
+                        <img src="{{ top_creators.2.profile_image.url }}" alt="{{ top_creators.2.user.username }}" 
+                             style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 1rem 0; border: 3px solid #cd7f32;">
+                    {% else %}
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #cd7f32; display: flex; align-items: center; justify-content: center; margin: 1rem auto; color: white; font-size: 2.5rem;">
+                            👤
+                        </div>
+                    {% endif %}
+                    
+                    <h5 style="color: var(--text-light); margin-bottom: 0.5rem;">{{ top_creators.2.user.username }}</h5>
+                    <h3 style="color: #cd7f32; font-weight: bold; margin-bottom: 0.5rem;">{{ top_creators.2.total_points }}</h3>
+                    <p class="text-muted mb-0">{{ top_creators.2.total_videos }} videos</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Full Leaderboard Table -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 style="color: var(--accent-pink); margin-bottom: 2rem;">📊 Full Rankings</h3>
+                    
+                    {% if top_creators %}
+                    <div class="table-responsive">
+                        <table class="table" style="color: var(--text-light);">
+                            <thead style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border-bottom: 2px solid var(--accent-pink);">
+                                <tr>
+                                    <th style="width: 10%;">Rank</th>
+                                    <th style="width: 25%;">Creator</th>
+                                    <th style="width: 20%;">Points</th>
+                                    <th style="width: 20%;">Videos</th>
+                                    <th style="width: 25%; text-align: right;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for creator in top_creators %}
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td>
+                                        {% if forloop.counter == 1 %}
+                                            <span style="font-size: 1.5rem;">🥇</span>
+                                        {% elif forloop.counter == 2 %}
+                                            <span style="font-size: 1.5rem;">🥈</span>
+                                        {% elif forloop.counter == 3 %}
+                                            <span style="font-size: 1.5rem;">🥉</span>
+                                        {% else %}
+                                            <strong style="color: var(--accent-pink);">#{{ forloop.counter }}</strong>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            {% if creator.profile_image %}
+                                                <img src="{{ creator.profile_image.url }}" alt="{{ creator.user.username }}" 
+                                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                                            {% else %}
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--accent-pink); display: flex; align-items: center; justify-content: center; color: white;">
+                                                    👤
+                                                </div>
+                                            {% endif %}
+                                            <strong>{{ creator.user.username }}</strong>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: var(--accent-pink); font-size: 1.1rem;">{{ creator.total_points }}</strong>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--light-pink);">🎵 {{ creator.total_videos }}</span>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        {% if forloop.counter <= 3 %}
+                                            <span class="badge" style="background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); padding: 0.5rem 1rem;">
+                                                ✨ Featured
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Active</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info text-center p-5">
+                        <h5>📭 No Creators Yet</h5>
+                        <p class="text-muted">Be the first creator on Sangeet! Start by uploading your first video.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--accent-pink);">
+                <div class="card-body p-5 text-center">
+                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">🚀 Join the Creator Community</h3>
+                    <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 2rem;">
+                        Ready to start your journey to the top? Upload videos, earn points, and get featured on our homepage!
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'become_creator' %}" class="btn btn-primary btn-lg w-100">
+                                ➕ Become Creator
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{% url 'creator_dashboard' %}" class="btn btn-outline-danger btn-lg w-100">
+                                📊 Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 style="color: var(--accent-pink); margin-bottom: 2rem;">❓ How Does It Work?</h3>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); border: 2px solid var(--border-color);">
+                        <div class="card-body text-center">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📤</div>
+                            <h5>Upload Videos</h5>
+                            <p class="text-muted small">Share YouTube videos to our platform</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); border: 2px solid var(--border-color);">
+                        <div class="card-body text-center">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">⭐</div>
+                            <h5>Earn Points</h5>
+                            <p class="text-muted small">Get 10 points per video (1 point = 1 points)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); border: 2px solid var(--border-color);">
+                        <div class="card-body text-center">
+                            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏆</div>
+                            <h5>Get Featured</h5>
+                            <p class="text-muted small">Top 3 creators featured on homepage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

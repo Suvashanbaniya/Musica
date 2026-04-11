@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ song.title }} - Sangeet Music{% endblock %}
+
+{% block content %}
+<style>
+    body { margin-top: 80px; }
+    .song-container { max-width: 1400px; margin: 0 auto; }
+    .no-scroll { max-height: none; overflow: visible; }
+</style>
+
+<div class="song-container" style="padding: 0 15px;">
+    <div class="row">
+        <!-- Left Column - WIDER -->
+        <div class="col-md-8">
+            <!-- Title and Artist -->
+            <h1 style="color: var(--accent-pink); margin: 0 0 10px 0; font-size: 2rem;">{{ song.title }}</h1>
+            <p style="color: var(--text-light); margin: 0 0 5px 0; font-size: 0.95rem;">
+                <strong>Artist:</strong> 
+                <a href="{% url 'artist_detail' song.artist.id %}" style="color: var(--accent-pink); text-decoration: none;">
+                    {{ song.artist.name }}
+                </a>
+            </p>
+            {% if song.creator %}
+            <p style="color: var(--text-light); margin: 0 0 20px 0; font-size: 0.9rem;">
+                <strong>Creator:</strong> <span style="color: var(--accent-pink);">{{ song.creator.user.username }}</span>
+            </p>
+            {% endif %}
+
+            <!-- Album Image -->
+            <!-- Album Image + Guitar Chords Side by Side -->
+            <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                <!-- Album Cover -->
+                <div style="flex: 0 0 auto;">
+                    {% if song.image %}
+                    <img src="{{ song.image.url }}" style="width: 300px; height: 300px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    {% else %}
+                    <div style="width: 300px; height: 300px; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">🎵</div>
+                    {% endif %}
+                </div>
+
+                <!-- Guitar Chords -->
+                <div style="flex: 1; background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); padding: 20px; border-radius: 10px; border-left: 5px solid var(--accent-pink); max-height: 300px; overflow-y: auto;">
+                    <h5 style="color: var(--accent-pink); margin: 0 0 15px 0;">🎸 Guitar Chords</h5>
+                    <p style="color: var(--text-light); margin: 0; font-family: monospace; line-height: 1.6; white-space: pre-wrap;">{{ song.chords|default:"No chords available" }}</p>
+                </div>
+            </div>
+           
+            <!-- Play Button & Stats -->
+            <div style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); padding: 15px; border-radius: 10px; border: 2px solid var(--accent-pink); margin-bottom: 20px;">
+                <h4 style="color: var(--accent-pink); margin: 0 0 10px 0;">🎵 Listen on Spotify</h4>
+                <a href="{% url 'search_spotify' %}?q={{ song.title }}%20{{ song.artist.name }}" class="btn btn-success">
+                    🎵 Search on Spotify
+                </a>
+            </div>
+
+            <!-- YouTube - NOW WIDER -->
+            {% if song.youtube_id %}
+            <div style="margin-bottom: 20px;">
+                <h5 style="color: var(--text-light); margin: 0 0 10px 0;">📺 YouTube</h5>
+                <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: var(--secondary-dark-blue); border-radius: 10px; overflow: hidden;">
+                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                        src="https://www.youtube.com/embed/{{ song.youtube_id }}" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Stats -->
+            <div style="display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; background: rgba(255, 0, 110, 0.05); border-radius: 10px;">
+                <div><p style="color: var(--text-muted); margin: 0; font-size: 0.85rem;">👁️ Views</p><h5 style="color: var(--accent-pink); margin: 0;">{{ song.views }}</h5></div>
+                <div><p style="color: var(--text-muted); margin: 0; font-size: 0.85rem;">❤️ Likes</p><h5 style="color: var(--light-pink); margin: 0;">{{ song.total_likes }}</h5></div>
+                <div><p style="color: var(--text-muted); margin: 0; font-size: 0.85rem;">💬 Comments</p><h5 style="color: #ff69b4; margin: 0;">{{ comments.count }}</h5></div>
+            </div>
+
+            <!-- Like Button -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'like_song' song.id %}" class="btn {% if is_liked %}btn-danger{% else %}btn-outline-danger{% endif %}" style="margin-bottom: 20px;">
+                {% if is_liked %}❤️ Unlike{% else %}🤍 Like{% endif %}
+            </a>
+            {% endif %}
+
+            <!-- Lyrics - NOW WIDER -->
+            {% if song.lyrics %}
+            <div style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); padding: 20px; border-radius: 10px; border-left: 5px solid var(--accent-pink); margin-bottom: 20px;">
+                <h5 style="color: var(--accent-pink); margin: 0 0 15px 0;">📝 Lyrics</h5>
+                <p style="white-space: pre-line; line-height: 1.8; color: var(--text-light); margin: 0; font-size: 0.95rem;">{{ song.lyrics }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Comments -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="color: var(--accent-pink); margin: 0 0 15px 0;">💬 Comments</h5>
+                
+                <form method="POST" style="margin-bottom: 20px;">
+                    {% csrf_token %}
+                    <textarea name="text" class="form-control" rows="2" placeholder="Add a comment..." required style="background: var(--secondary-dark-blue); color: var(--text-light); border-color: var(--accent-pink); margin-bottom: 10px;"></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
+                </form>
+
+                {% if comments %}
+                    {% for comment in comments %}
+                    <div style="border-bottom: 1px solid var(--border-color); padding: 10px 0;">
+                        <p style="margin: 0;"><strong style="color: var(--accent-pink);">{{ comment.user.username }}</strong> <small style="color: var(--text-muted);">{{ comment.created_at|date:"M d H:i" }}</small></p>
+                        <p style="color: var(--text-light); margin: 5px 0 0 0;">{{ comment.content }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p style="color: var(--text-muted); text-align: center; padding: 10px;">No comments yet!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column - Sidebar - NARROWER -->
+        <div class="col-md-4">
+            <!-- Artist Card -->
+            {% if song.artist %}
+            <div style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); padding: 20px; border-radius: 10px; border-top: 4px solid var(--accent-pink); margin-bottom: 20px; text-align: center; position: sticky; top: 100px;">
+                {% if song.artist.image %}
+                <img src="{{ song.artist.image.url }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent-pink);">
+                {% else %}
+                <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: white; font-size: 2.5rem;">🎤</div>
+                {% endif %}
+                <h6 style="color: var(--text-light); margin: 0; font-size: 0.85rem;">Artist</h6>
+                <h5 style="color: var(--accent-pink); margin: 5px 0; word-break: break-word;">{{ song.artist.name }}</h5>
+                <p style="color: var(--text-muted); margin: 5px 0; font-size: 0.85rem;">{{ song.artist.genre }}</p>
+                {% if song.artist.bio %}
+                <p style="color: var(--text-muted); margin: 10px 0; font-size: 0.8rem; line-height: 1.4;">{{ song.artist.bio|truncatewords:15 }}</p>
+                {% endif %}
+                <a href="{% url 'artist_detail' song.artist.id %}" class="btn btn-primary btn-sm w-100" style="margin-top: 10px;">View Artist</a>
+            </div>
+            {% endif %}
+
+            <!-- Creator Card -->
+            {% if song.creator %}
+            <div style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); padding: 20px; border-radius: 10px; border-top: 4px solid var(--light-pink); text-align: center; position: sticky; top: 100px;">
+                {% if song.creator.profile_image %}
+                <img src="{{ song.creator.profile_image.url }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid var(--light-pink);">
+                {% else %}
+                <div style="width: 100px; height: 100px; border-radius: 50%; background-color: var(--light-pink); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: white; font-size: 2rem;">👤</div>
+                {% endif %}
+                <h6 style="color: var(--text-light); margin: 0; font-size: 0.85rem;">Creator</h6>
+                <h5 style="color: var(--light-pink); margin: 5px 0; word-break: break-word;">{{ song.creator.user.username }}</h5>
+                <p style="color: var(--text-light); margin: 0;">⭐ {{ song.creator.total_points }} pts</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

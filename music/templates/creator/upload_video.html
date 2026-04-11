@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Video - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <h1 class="card-title" style="color: var(--accent-pink); font-size: 2.5rem;">📤 Upload Video</h1>
+                        <p class="text-muted">Share a YouTube video and earn <strong style="color: var(--accent-pink);">10 points</strong>!</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>❌ Error:</strong> {{ error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <!-- Upload Form -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Video Title -->
+                        <div class="mb-4">
+                            <label for="title" class="form-label">
+                                <strong>🎵 Song Title</strong>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="title"
+                                class="form-control" 
+                                id="title"
+                                placeholder="e.g., Never Gonna Give You Up"
+                                required>
+                            <small class="text-muted d-block mt-2">
+                                Enter the name of the song you're uploading
+                            </small>
+                        </div>
+
+                        <!-- YouTube Link -->
+                        <div class="mb-4">
+                            <label for="youtube_link" class="form-label">
+                                <strong>🎥 YouTube Link</strong>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input 
+                                type="url" 
+                                name="youtube_link"
+                                class="form-control" 
+                                id="youtube_link"
+                                placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                required>
+                            <small class="text-muted d-block mt-2">
+                                Paste the full YouTube URL of the song
+                                <br>Accepted formats:
+                                <br>• https://www.youtube.com/watch?v=VIDEO_ID
+                                <br>• https://youtu.be/VIDEO_ID
+                            </small>
+                        </div>
+
+                        <!-- Artist Name -->
+                        <div class="mb-4">
+                            <label for="artist" class="form-label">
+                                <strong>🎤 Artist Name</strong>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="artist"
+                                class="form-control" 
+                                id="artist"
+                                placeholder="e.g., Rick Astley">
+                            <small class="text-muted d-block mt-2">
+                                Enter the artist/singer name
+                            </small>
+                        </div>
+
+                        <!-- Cover Image -->
+                        <div class="mb-4">
+                            <label for="image" class="form-label">
+                                <strong>🖼️ Cover Image</strong>
+                            </label>
+                            <input 
+                                type="file" 
+                                name="image"
+                                class="form-control" 
+                                id="image"
+                                accept="image/*">
+                            <small class="text-muted d-block mt-2">
+                                Upload a cover/thumbnail image for the song (JPG, PNG). Max 5MB.
+                                <br>If not provided, YouTube thumbnail will be used automatically.
+                            </small>
+                        </div>
+
+                        <!-- Lyrics -->
+                        <div class="mb-4">
+                            <label for="lyrics" class="form-label">
+                                <strong>📝 Lyrics (Optional)</strong>
+                            </label>
+                            <textarea 
+                                name="lyrics"
+                                class="form-control" 
+                                id="lyrics"
+                                rows="8"
+                                placeholder="Paste the song lyrics here (optional)..."></textarea>
+                            <small class="text-muted d-block mt-2">
+                                Add song lyrics to help users find your video and enjoy it better
+                            </small>
+                        </div>
+
+                        <!-- Info Box -->
+                        <div class="alert alert-info border-pink mb-4" role="alert">
+                            <h6 class="alert-heading">ℹ️ What Happens Next</h6>
+                            <ul class="mb-0">
+                                <li>✅ Video will be added to our platform</li>
+                                <li>✅ You'll earn <strong style="color: var(--accent-pink);">10 points</strong> instantly</li>
+                                <li>✅ Song will appear on your creator dashboard</li>
+                                <li>✅ Users can like, comment, and share your video</li>
+                                <li>✅ If you're in top 3, you'll be featured on homepage</li>
+                            </ul>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                ✨ Upload Video & Earn 10 Points
+                            </button>
+                        </div>
+
+                        <!-- Cancel Button -->
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'creator_dashboard' %}" class="btn btn-outline-secondary">
+                                ← Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+
+                    <hr class="my-5">
+
+                    <!-- Tips Section -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 style="color: var(--accent-pink);">💡 Tips for Success</h5>
+                            <ul class="text-muted">
+                                <li>Use clear, descriptive song titles</li>
+                                <li>Add high-quality cover images</li>
+                                <li>Include full song lyrics when possible</li>
+                                <li>Add relevant artist information</li>
+                                <li>Upload songs you genuinely enjoy</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 style="color: var(--accent-pink);">🎯 Earn More Points</h5>
+                            <ul class="text-muted">
+                                <li>Upload regularly to climb the leaderboard</li>
+                                <li>Share your creations with friends</li>
+                                <li>Build a quality music collection</li>
+                                <li>Engage with your audience</li>
+                                <li>Maintain high video quality</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Creators -->
+            <div class="card shadow mt-5 mb-5">
+                <div class="card-body p-4">
+                    <h5 style="color: var(--accent-pink); margin-bottom: 2rem;">
+                        🌟 Start Your Journey to Featured Creator Status
+                    </h5>
+                    
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">1️⃣</div>
+                            <h6>Upload Videos</h6>
+                            <p class="text-muted small">Each video = 10 points</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">2️⃣</div>
+                            <h6>Earn Points</h6>
+                            <p class="text-muted small">Accumulate points over time</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">3️⃣</div>
+                            <h6>Get Featured</h6>
+                            <p class="text-muted small">Top 3 on homepage</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'leaderboard' %}" class="btn btn-outline-danger">
+                            View Current Top Creators →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

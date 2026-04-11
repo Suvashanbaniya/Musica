@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Become a Creator - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mt-5 mb-5">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h1 class="card-title" style="color: var(--accent-pink); font-size: 2.5rem;">🎬 Become a Creator</h1>
+                        <p class="text-muted">Share your favorite music with the world and earn points!</p>
+                    </div>
+
+                    <!-- Benefits Section -->
+                    <div class="row mb-5">
+                        <div class="col-md-4 text-center">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🎵</div>
+                            <h5>Upload Videos</h5>
+                            <p class="text-muted small">Upload YouTube videos to our platform</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">⭐</div>
+                            <h5>Earn Points</h5>
+                            <p class="text-muted small">Get 10 points per video uploaded</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🏆</div>
+                            <h5>Get Featured</h5>
+                            <p class="text-muted small">Top 3 creators featured on homepage</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Creator Form -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Bio Field -->
+                        <div class="mb-4">
+                            <label for="bio" class="form-label">
+                                <strong>👤 Bio</strong>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea 
+                                name="bio"
+                                class="form-control" 
+                                id="bio"
+                                rows="5"
+                                placeholder="Tell us about yourself! What kind of music do you like? What's your story?"
+                                required></textarea>
+                            <small class="text-muted d-block mt-2">
+                                Share what makes you unique as a creator (250-500 characters recommended)
+                            </small>
+                        </div>
+
+                        <!-- Profile Image Field -->
+                        <div class="mb-4">
+                            <label for="profile_image" class="form-label">
+                                <strong>🖼️ Profile Picture</strong>
+                              
+                            </label>
+                            <input 
+                                type="file" 
+                                name="profile_image"
+                                class="form-control" 
+                                id="profile_image"
+                                accept="image/*">
+                            <small class="text-muted d-block mt-2">
+                                Upload a clear profile picture (JPG, PNG). Max 5MB.
+                            </small>
+                        </div>
+
+                        <!-- Info Box -->
+                        <div class="alert alert-info border-pink" role="alert">
+                            <h6 class="alert-heading">ℹ️ Creator Benefits</h6>
+                            <ul class="mb-0">
+                                <li>Upload unlimited videos</li>
+                                <li>Earn 10 points per video</li>
+                                <li>Get featured on homepage if in top 3</li>
+                                <li>Build your music curator profile</li>
+                                <li>Connect with music lovers worldwide</li>
+                            </ul>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                ✨ Create Creator Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <!-- Already Creator -->
+                    <p class="text-center text-muted">
+                        Already a creator? 
+                        <a href="{% url 'creator_dashboard' %}" class="text-decoration-none" style="color: var(--accent-pink); font-weight: bold;">
+                            Go to Dashboard →
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Featured Creators Preview -->
+            <div class="card shadow mb-5">
+                <div class="card-body p-4">
+                    <h4 class="mb-4">
+                        <span style="color: var(--accent-pink);">🌟</span> 
+                        Top Creators You Could Join
+                    </h4>
+                    
+                    {% if top_creators %}
+                        <div class="row">
+                            {% for creator in top_creators %}
+                            <div class="col-md-4 mb-3">
+                                <div class="p-3" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%); border: 2px solid var(--border-color); border-radius: 10px; text-align: center;">
+                                    {% if creator.profile_image %}
+                                        <img src="{{ creator.profile_image.url }}" alt="{{ creator.user.username }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem;">
+                                    {% else %}
+                                        <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--accent-pink); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem;">
+                                            👤
+                                        </div>
+                                    {% endif %}
+                                    <h6>{{ creator.user.username }}</h6>
+                                    <p style="color: var(--accent-pink); font-weight: bold;">{{ creator.total_points }} points</p>
+                                    <small class="text-muted">{{ creator.total_videos }} videos</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

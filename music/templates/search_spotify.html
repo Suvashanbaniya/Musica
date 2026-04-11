@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Spotify - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-5 mt-4">
+        <div class="col-md-12">
+            <h1 style="color: var(--accent-pink); margin-bottom: 1rem;">🔍 Search Spotify</h1>
+            <p class="text-muted">Find and stream songs directly from Spotify</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
+            <form method="GET" class="mb-4">
+                <div class="input-group input-group-lg">
+                    <input type="text" name="q" class="form-control" 
+                           placeholder="Search for songs, artists..." 
+                           value="{{ query }}" required>
+                    <button class="btn btn-primary" type="submit">
+                        🔍 Search Spotify
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>❌ Error:</strong> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- Results -->
+    {% if results %}
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 style="color: var(--accent-pink); margin-bottom: 2rem;">
+                🎵 Results ({{ results|length }} songs found)
+            </h3>
+
+            <div class="row">
+                {% for track in results %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <!-- Album Cover -->
+                        {% if track.image %}
+                        <img src="{{ track.image }}" class="card-img-top" 
+                             alt="{{ track.title }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top" 
+                             style="height: 200px; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            🎵
+                        </div>
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ track.title }}</h5>
+                            <p class="card-text text-muted small">
+                                <strong>Artist:</strong> {{ track.artist }}
+                            </p>
+                            <p class="card-text text-muted small">
+                                <strong>Album:</strong> {{ track.album }}
+                            </p>
+
+                            <!-- Preview Player -->
+                            {% if track.preview_url %}
+                            <div class="mb-3">
+                                <small class="text-muted d-block mb-2">🎵 Preview (30 sec)</small>
+                                <audio controls style="width: 100%; height: 30px;">
+                                    <source src="{{ track.preview_url }}" type="audio/mpeg">
+                                    Your browser does not support audio.
+                                </audio>
+                            </div>
+                            {% else %}
+                            <p class="text-muted small mb-3">🔇 No preview available</p>
+                            {% endif %}
+
+                            <!-- Duration -->
+                            <p class="text-muted small mb-3">
+                                ⏱️ Duration: {{ track.duration|add:0|divisibleby:60000|yesno:"Yes,No" }} 
+                                {{ track.duration|add:0|divisibleby:1000 }}ms
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <a href="{{ track.external_url }}" target="_blank" 
+                                   class="btn btn-success btn-sm">
+                                    🎵 Open in Spotify
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% elif query %}
+    <div class="alert alert-warning text-center p-5">
+        <h4>❌ No results found</h4>
+        <p class="text-muted">Try searching with different keywords</p>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center p-5">
+        <h4>🎵 Search for songs</h4>
+        <p class="text-muted">Enter a song name, artist, or album to get started</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

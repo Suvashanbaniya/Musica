@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artist.name }} - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            {% if artist.image %}
+            <img src="{{ artist.image.url }}" alt="{{ artist.name }}" class="img-fluid rounded shadow">
+            {% else %}
+            <div class="bg-secondary rounded shadow d-flex align-items-center justify-content-center" 
+                 style="height: 300px; width: 100%;">
+                <span class="text-white text-center">
+                    <h3>🎤</h3>
+                    <p>No image available</p>
+                </span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-8">
+            <h1>{{ artist.name }}</h1>
+            <p class="text-muted">
+                <strong>Genre:</strong> {{ artist.genre }}
+            </p>
+            
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">About</h5>
+                    <p>{{ artist.bio }}</p>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <strong>📊 Total Songs:</strong> {{ songs.count }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>🎵 Songs by {{ artist.name }}</h3>
+            
+            {% if songs %}
+                <div class="row">
+                    {% for song in songs %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                        <div class="card shadow-sm h-100">
+                            {% if song.image %}
+                            <img src="{{ song.image.url }}" class="card-img-top" alt="{{ song.title }}">
+                            {% else %}
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                                 style="height: 200px;">
+                                <span class="text-white">🎵</span>
+                            </div>
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ song.title }}</h5>
+                                <p class="card-text text-muted small">
+                                    <strong>Views:</strong> {{ song.views }}
+                                </p>
+
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'song_detail' song.id %}" class="btn btn-primary btn-sm">
+                                        Play Now ▶
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    No songs available for this artist yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,866 @@
+/* =====================================================
+   SANGEET MUSIC - DARK BLUE & PINK THEME
+   ===================================================== */
+
+:root {
+    --primary-dark-blue: #0b2441;
+    --secondary-dark-blue: #1a202c;
+    --accent-pink: #ff006e;
+    --light-pink: #ff4d94;
+    --neon-pink: #ff1493;
+    --bright-pink: #ff69b4;
+    --text-light: #f5f5f5;
+    --text-muted: #b0b0b0;
+    --border-color: #2d3748;
+}
+
+/* =====================================================
+   GENERAL STYLES
+   ===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: var(--primary-dark-blue);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--secondary-dark-blue) 100%);
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   NAVBAR STYLING
+   ===================================================== */
+
+.navbar {
+    background: linear-gradient(90deg, var(--primary-dark-blue) 0%, #1a1f35 50%, var(--secondary-dark-blue) 100%);
+    border-bottom: 2px solid var(--accent-pink);
+    box-shadow: 0 8px 32px rgba(255, 0, 110, 0.15);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ff006e 0%, #ff69b4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(255, 0, 110, 0.3);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    margin-left: 1.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--light-pink));
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-pink) !important;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Search Bar */
+.search-form {
+    width: 350px;
+    margin-right: 2rem;
+}
+
+.search-form .form-control {
+    background-color: #2d3748;
+    border: 2px solid var(--border-color);
+    color: var(--text-light);
+    padding: 0.75rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.search-form .form-control:focus {
+    background-color: #3a424f;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 15px rgba(255, 0, 110, 0.3);
+    color: var(--text-light);
+}
+
+.search-form .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.search-form .btn {
+    background: linear-gradient(135deg, var(--accent-pink), var(--light-pink));
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    margin-left: -40px;
+}
+
+.search-form .btn:hover {
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.4);
+    transform: scale(1.05);
+}
+
+
+/* =====================================================
+   CONTAINER & MAIN CONTENT
+   ===================================================== */
+
+.container-main {
+    min-height: calc(100vh - 200px);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+
+/* =====================================================
+   PAGE TITLE & HEADING
+   ===================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-light);
+    font-weight: 700;
+}
+
+.container > .row > .col-md-12 > h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--text-light) 0%, var(--light-pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.container > .row > .col-md-12 > p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+
+/* =====================================================
+   SONG CARDS - MAIN STYLING
+   ===================================================== */
+
+.card {
+    background-color: var(--secondary-dark-blue);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    height: 100%;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--light-pink), var(--accent-pink));
+    z-index: 1;
+}
+
+.card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(255, 0, 110, 0.25);
+    border-color: var(--accent-pink);
+}
+
+/* Card Image */
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.card:hover .card-img-top {
+    filter: brightness(1.1) contrast(1.1);
+    transform: scale(1.05);
+}
+
+.card-img-top::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.2) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card:hover .card-img-top::after {
+    opacity: 1;
+}
+
+/* Card Body */
+.card-body {
+    padding: 1.5rem;
+    background-color: var(--secondary-dark-blue);
+    border-top: 1px solid var(--border-color);
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card:hover .card-title {
+    color: var(--accent-pink);
+}
+
+.card-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text strong {
+    color: var(--light-pink);
+}
+
+.card-text a {
+    color: var(--light-pink);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.card-text a:hover {
+    color: var(--accent-pink);
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-pink), var(--light-pink));
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 0, 110, 0.2);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--light-pink), var(--accent-pink));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 0, 110, 0.4);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-danger {
+    border: 2px solid var(--accent-pink);
+    color: var(--accent-pink);
+    font-weight: 600;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+}
+
+
+/* =====================================================
+   ALERT MESSAGES
+   ===================================================== */
+
+.alert {
+    background-color: var(--secondary-dark-blue);
+    border: 2px solid var(--border-color);
+    color: var(--text-light);
+    border-radius: 10px;
+}
+
+.alert-info {
+    border-color: #0066ff;
+    background-color: rgba(0, 102, 255, 0.1);
+}
+
+.alert-info h4 {
+    color: #66b3ff;
+}
+
+.alert-info p {
+    color: var(--text-light);
+}
+
+
+/* =====================================================
+   LYRICS SECTION STYLING ✨
+   ===================================================== */
+
+.lyrics-section {
+    margin: 3rem 0;
+}
+
+.lyrics-section h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--accent-pink), var(--light-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Main Lyrics Card */
+.lyrics-card {
+    background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%);
+    border: 2px solid var(--border-color);
+    border-left: 5px solid var(--accent-pink);
+    border-radius: 15px;
+    padding: 2.5rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(255, 0, 110, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.lyrics-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255, 0, 110, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.lyrics-card:hover {
+    border-color: var(--accent-pink);
+    border-left-width: 8px;
+    box-shadow: 0 12px 40px rgba(255, 0, 110, 0.25);
+    transform: translateX(8px);
+    background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%);
+}
+
+.lyrics-text {
+    color: var(--text-light);
+    line-height: 2.2;
+    font-size: 1.05rem;
+    white-space: pre-line;
+    font-family: 'Georgia', 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+
+/* No Lyrics Message */
+.no-lyrics {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.05) 100%);
+    border: 2px dashed var(--accent-pink);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.no-lyrics:hover {
+    border-color: var(--light-pink);
+    box-shadow: 0 4px 15px rgba(255, 0, 110, 0.15);
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer {
+    background: linear-gradient(180deg, var(--primary-dark-blue) 0%, #0a0d12 100%);
+    border-top: 2px solid var(--accent-pink);
+    color: var(--text-muted);
+    padding: 3rem 0 1rem 0;
+    margin-top: 4rem;
+    box-shadow: 0 -4px 15px rgba(255, 0, 110, 0.1);
+}
+
+.footer h5 {
+    color: var(--accent-pink);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-pink);
+    padding-left: 5px;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer hr {
+    border-color: var(--border-color);
+    margin: 2rem 0;
+}
+
+.footer p {
+    margin: 0;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .search-form {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .nav-link {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .container > .row > .col-md-12 > h1 {
+        font-size: 1.8rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .lyrics-card {
+        padding: 1.5rem;
+    }
+
+    .lyrics-text {
+        line-height: 2;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.75rem 0;
+    }
+
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+
+    .container > .row > .col-md-12 > h1 {
+        font-size: 1.5rem;
+    }
+
+    .search-form .btn {
+        margin-left: -35px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .lyrics-section h3 {
+        font-size: 1.3rem;
+    }
+
+    .lyrics-card {
+        padding: 1rem;
+    }
+
+    .lyrics-text {
+        font-size: 0.9rem;
+        line-height: 1.8;
+    }
+}
+
+
+/* =====================================================
+   SCROLLBAR STYLING
+   ===================================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-dark-blue);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-pink), var(--light-pink));
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--light-pink), var(--accent-pink));
+}
+
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.navbar-brand:hover {
+    animation: glow 0.5s ease-in-out;
+}
+
+
+/* =====================================================
+   UTILITY CLASSES
+   ===================================================== */
+
+.text-pink {
+    color: var(--accent-pink);
+}
+
+.text-muted-custom {
+    color: var(--text-muted);
+}
+
+.bg-dark-blue {
+    background-color: var(--secondary-dark-blue);
+}
+
+.border-pink {
+    border: 2px solid var(--accent-pink);
+}
+
+.shadow-pink {
+    box-shadow: 0 4px 15px rgba(255, 0, 110, 0.2);
+}
+
+/* ===================================================== */
+/* =====================================================
+   ABOUT SONG SECTION STYLING
+   ===================================================== */
+
+.about-song-section {
+    position: sticky;
+    top: 20px;
+}
+
+.about-song-card {
+    background: linear-gradient(135deg, #ff4d6d 0%, #ff006e 100%);
+    border: 2px solid #ff1493;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 6px 20px rgba(255, 0, 110, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-song-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.about-song-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
+}
+
+.about-song-card h5 {
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.about-song-card p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.6;
+}
+
+.about-song-card strong {
+    color: white;
+    font-weight: 600;
+}
+
+.about-song-card hr {
+    border-color: rgba(255, 255, 255, 0.3);
+    margin: 0.8rem 0;
+}
+
+
+/* =====================================================
+   COMMENTS SECTION STYLING
+   ===================================================== */
+
+.comments-section {
+    margin-top: 2rem;
+}
+
+.comments-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+    background: linear-gradient(135deg, #0066ff, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Comment Form Card */
+.comment-form-card {
+    background: linear-gradient(135deg, #1a3a7a 0%, #0d1f47 100%);
+    border: 2px solid #0066ff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.2);
+}
+
+.comment-form-card .form-label {
+    color: #66b3ff;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.comment-form-card .form-control {
+    background-color: #0a1929;
+    border: 2px solid #0066ff;
+    color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+.comment-form-card .form-control:focus {
+    background-color: #0d2147;
+    border-color: #0099ff;
+    box-shadow: 0 0 15px rgba(0, 102, 255, 0.3);
+    color: white;
+}
+
+.comment-form-card .form-control::placeholder {
+    color: #4d7fb3;
+}
+
+/* Comment List */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment-item {
+    background: linear-gradient(135deg, #1a3a7a 0%, #0d1f47 100%);
+    border: 1px solid #0066ff;
+    border-left: 4px solid #0099ff;
+    border-radius: 10px;
+    padding: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 102, 255, 0.15);
+}
+
+.comment-item:hover {
+    border-left-width: 6px;
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.25);
+    transform: translateX(4px);
+}
+
+.comment-username {
+    color: #66d9ff;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.comment-time {
+    color: #4d7fb3;
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.comment-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Comments Info Sidebar */
+.comments-info-card {
+    background: linear-gradient(135deg, #1a3a7a 0%, #0d1f47 100%);
+    border: 2px solid #0066ff;
+    border-radius: 12px;
+    padding: 1.3rem;
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.2);
+    position: sticky;
+    top: 20px;
+}
+
+.comments-info-card h5 {
+    color: #66d9ff;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.comments-info-card p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+}
+
+.comments-info-card strong {
+    color: #66d9ff;
+    font-weight: 600;
+}
+
+.comments-info-card hr {
+    border-color: rgba(0, 102, 255, 0.3);
+    margin: 0.8rem 0;
+}
+
+.comments-info-card .text-muted {
+    color: #4d7fb3 !important;
+}
+
+/* No Comments Alert */
+.no-comments-alert {
+    background: linear-gradient(135deg, #1a3a7a 0%, #0d1f47 100%);
+    border: 2px dashed #0066ff;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    color: #66b3ff;
+    font-size: 1rem;
+}
+
+.no-comments-alert:hover {
+    border-style: solid;
+    box-shadow: 0 6px 20px rgba(0, 102, 255, 0.2);
+}
+
+/* Badge Styling */
+.badge {
+    background-color: #0066ff !important;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+}
+
+/* ===================================================== */

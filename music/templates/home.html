@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Sangeet Music{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Featured Top 3 Creators Section -->
+    {% if top_creators %}
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="text-center mb-5">
+                <h2 style="color: var(--accent-pink); font-size: 2.2rem;">🌟 Featured Top Creators</h2>
+                <p class="text-muted">The most talented music curators on Sangeet</p>
+            </div>
+
+            <div class="row">
+                {% for creator in top_creators %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--accent-pink); border-radius: 15px;">
+                        <div class="card-body text-center p-4">
+                            <!-- Rank Badge -->
+                            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">
+                                {% if forloop.counter == 1 %}#1{% elif forloop.counter == 2 %}#2{% else %}#3{% endif %}
+                            </div>
+
+                            <!-- Profile Image -->
+                            {% if creator.profile_image %}
+                                <img src="{{ creator.profile_image.url }}" alt="{{ creator.user.username }}" 
+                                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-top: 2rem; margin-bottom: 1rem; border: 4px solid var(--accent-pink);">
+                            {% else %}
+                                <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); display: flex; align-items: center; justify-content: center; margin: 2rem auto 1rem; color: white; font-size: 3rem;">
+                                    👤
+                                </div>
+                            {% endif %}
+
+                            <!-- Creator Info -->
+                            <h5 style="color: var(--text-light); margin-bottom: 0.5rem;">{{ creator.user.username }}</h5>
+                            <p class="text-muted small mb-2">@{{ creator.user.email }}</p>
+
+                            <!-- Points and Videos -->
+                            <div style="background: rgba(255, 0, 110, 0.1); border-radius: 10px; padding: 1rem; margin: 1rem 0;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h5 style="color: var(--accent-pink); font-weight: bold;">{{ creator.total_points }}</h5>
+                                        <small class="text-muted">Points</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h5 style="color: var(--light-pink); font-weight: bold;">{{ creator.total_videos }}</h5>
+                                        <small class="text-muted">Videos</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creator Bio -->
+                            {% if creator.bio %}
+                            <p class="text-muted small" style="margin: 1rem 0;">{{ creator.bio|truncatewords:15 }}</p>
+                            {% endif %}
+
+                            <!-- View Profile Button -->
+                            <a href="{% url 'leaderboard' %}" class="btn btn-primary btn-sm w-100 mt-2">
+                                View All Creators →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- View Leaderboard Button -->
+            <div class="text-center mb-5">
+                <a href="{% url 'leaderboard' %}" class="btn btn-outline-danger btn-lg">
+                    🏆 View Full Leaderboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border-color: var(--border-color); margin: 3rem 0;">
+    {% endif %}
+
+    <!-- Latest Songs Section -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-2" style="color: var(--accent-pink); font-size: 2.5rem;">🎵 Latest Songs</h1>
+            <p class="text-muted">Discover and enjoy amazing music</p>
+        </div>
+    </div>
+
+    {% if songs %}
+        <div class="row">
+            {% for song in songs %}
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card shadow-sm h-100">
+                    {% if song.image %}
+                    <img src="{{ song.image.url }}" class="card-img-top" alt="{{ song.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                         style="height: 200px;">
+                        <span class="text-white" style="font-size: 3rem;">🎵</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ song.title }}</h5>
+                        <p class="card-text text-muted small">
+                            <strong>Artist:</strong> 
+                            <a href="{% url 'artist_detail' song.artist.id %}" class="text-decoration-none">
+                                {{ song.artist.name }}
+                            </a>
+                        </p>
+
+                        {% if song.creator %}
+                        <p class="card-text text-muted small">
+                            <strong>Creator:</strong> 
+                            <span style="color: var(--accent-pink);">{{ song.creator.user.username }}</span>
+                        </p>
+                        {% endif %}
+
+                        <p class="card-text text-muted small">
+                            <strong>Views:</strong> {{ song.views }}
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'song_detail' song.id %}" class="btn btn-primary btn-sm">
+                                Play Now ▶
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No songs found</h4>
+            <p>
+                {% if request.GET.q %}
+                    No songs matching "{{ request.GET.q }}" were found.
+                {% else %}
+                    Start by adding some songs to your library.
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+
+    <!-- Become Creator CTA -->
+    <div class="row mt-5 mb-5">
+        <div class="col-md-12">
+            <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.15) 100%); border: 2px solid var(--accent-pink); border-radius: 15px;">
+                <div class="card-body p-5 text-center">
+                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">🎬 Want to Share Your Favorite Music?</h3>
+                    <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 2rem;">
+                        Become a Creator, upload videos, earn points, and get featured on our homepage!
+                    </p>
+                    <a href="{% url 'become_creator' %}" class="btn btn-primary btn-lg">
+                        ✨ Become a Creator Today
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
