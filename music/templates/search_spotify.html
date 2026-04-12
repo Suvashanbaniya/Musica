@@ -79,19 +79,20 @@
                             {% else %}
                             <p class="text-muted small mb-3">🔇 No preview available</p>
                             {% endif %}
+                            <!-- Listeners -->
+<p class="text-muted small mb-3">
+    👥 Listeners: {{ track.listeners }}
+</p>
 
-                            <!-- Duration -->
-                            <p class="text-muted small mb-3">
-                                ⏱️ Duration: {{ track.duration|add:0|divisibleby:60000|yesno:"Yes,No" }} 
-                                {{ track.duration|add:0|divisibleby:1000 }}ms
-                            </p>
+                            
 
                             <!-- Action Buttons -->
                             <div class="d-grid gap-2">
-                                <a href="{{ track.external_url }}" target="_blank" 
-                                   class="btn btn-success btn-sm">
-                                    🎵 Open in Spotify
-                                </a>
+                                <a href="{{ track.url }}" target="_blank" 
+   class="btn btn-success btn-sm">
+    🎵 View on Last.fm
+</a>
+                                
                             </div>
                         </div>
                     </div>

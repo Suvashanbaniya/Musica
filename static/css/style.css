@@ -10,7 +10,7 @@
     --neon-pink: #ff1493;
     --bright-pink: #ff69b4;
     --text-light: #f5f5f5;
-    --text-muted: #b0b0b0;
+    --text-muted: #cbd5e1;
     --border-color: #2d3748;
 }
 
@@ -259,6 +259,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-muted);
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
+    opacity : 0.9;
 }
 
 .card-text strong {
@@ -620,6 +621,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-pink {
     color: var(--accent-pink);
+
+}
+.text-muted {
+    color: var(--text-muted) !important;
 }
 
 .text-muted-custom {

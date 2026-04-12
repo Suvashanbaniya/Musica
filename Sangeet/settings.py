@@ -163,3 +163,24 @@ if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
     print(f"\n⚠️  WARNING: Spotify credentials not found!")
     print(f"   Make sure .env file is at: {BASE_DIR / '.env'}")
     print(f"   And contains SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET\n")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+# ================= LASTFM CONFIGURATION =================
+LASTFM_API_KEY = os.getenv("LASTFM_API_KEY")
+
+print(f"\n{'='*70}")
+print(f"LAST.FM CONFIGURATION")
+print(f"Last.fm API Key loaded: {LASTFM_API_KEY is not None}")
+if LASTFM_API_KEY:
+    print(f"API Key: {LASTFM_API_KEY[:15]}...")
+else:
+    print(f"❌ WARNING: LASTFM_API_KEY not found in .env file")
+print(f"{'='*70}\n")    
+    

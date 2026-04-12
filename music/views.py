@@ -17,27 +17,45 @@ import json
 
 
 #spotify service instance
-
 def search_spotify(request):
-    """Search Spotify for songs"""
+    """Search Last.fm for songs (FREE API - no premium needed)"""
     query = request.GET.get('q', '')
     results = []
     error_message = None
     
-    if query:
+    print(f"\n{'='*70}")
+    print(f"LAST.FM SEARCH REQUEST")
+    print(f"Query: '{query}'")
+    print(f"{'='*70}")
+    
+    if query and query.strip():
         try:
-            spotify_service = SpotifyService()
-            results = spotify_service.search_track(query, limit=10)
-            print(f"✅ Results: {len(results)} songs found")
+            from music.lastfm_service import LastFMService
+            
+            service = LastFMService()
+            results = service.search_track(query.strip(), limit=10)
+            
+            if not results:
+                error_message = f"❌ No songs found for '{query}'"
+                print(f"Error: {error_message}")
+            else:
+                print(f"✅ Successfully found {len(results)} songs")
+                
         except Exception as e:
-            error_message = f"Error searching Spotify: {str(e)}"
-            print(f"❌ {error_message}")
+            error_message = f"❌ Error searching: {str(e)}"
+            print(f"Exception: {error_message}")
+            import traceback
+            traceback.print_exc()
+    else:
+        error_message = "Please enter a search query"
     
     context = {
         'query': query,
         'results': results,
         'error_message': error_message,
     }
+    
+    print(f"Returning {len(results)} results\n")
     return render(request, 'search_spotify.html', context)
 
 
