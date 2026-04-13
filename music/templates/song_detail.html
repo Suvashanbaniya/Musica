@@ -132,6 +132,14 @@
                 <a href="{% url 'artist_detail' song.artist.id %}" class="btn btn-primary btn-sm w-100" style="margin-top: 10px;">View Artist</a>
             </div>
             {% endif %}
+            <!-- Search on youtube -->
+             <a href="{% url 'search_youtube' %}?q={{ song.title }}%20{{ song.artist.name }}" 
+   class="btn btn-danger" style="margin-top: 10px;">
+    🎬 Search on YouTube
+</a>
+
+
+
 
             <!-- Creator Card -->
             {% if song.creator %}

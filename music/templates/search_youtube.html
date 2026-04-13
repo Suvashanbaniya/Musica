@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Search YouTube - Sangeet Music{% endblock %}
+
+{% block content %}
+<style>
+    body { margin-top: 80px; }
+    .search-container { max-width: 1200px; margin: 0 auto; }
+</style>
+
+<div class="search-container" style="padding: 0 15px;">
+    <!-- Header -->
+    <div class="row mb-5 mt-4">
+        <div class="col-md-12">
+            <h1 style="color: var(--accent-pink); margin-bottom: 1rem;">🎬 Search YouTube</h1>
+            <p class="text-muted">Find and play music videos from YouTube</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
+            <form method="GET" class="mb-4">
+                <div class="input-group input-group-lg">
+                    <input type="text" name="q" class="form-control" 
+                           placeholder="Search for songs, artists..." 
+                           value="{{ query }}" required>
+                    <button class="btn btn-primary" type="submit">
+                        🔍 Search YouTube
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    {% if error_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ error_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- Results -->
+    {% if results %}
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 style="color: var(--accent-pink); margin-bottom: 2rem;">
+                🎵 Results ({{ results|length }} videos)
+            </h3>
+
+            <div class="row">
+                {% for video in results %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <!-- Thumbnail -->
+                        {% if video.image %}
+                        <img src="{{ video.image }}" class="card-img-top" 
+                             alt="{{ video.title }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <div class="card-img-top" 
+                             style="height: 200px; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            🎬
+                        </div>
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ video.title }}</h5>
+                            <p class="card-text text-muted small">
+                                <strong>Channel:</strong> {{ video.artist }}
+                            </p>
+
+                            <!-- Description -->
+                            {% if video.description %}
+                            <p class="text-muted small mb-3">
+                                {{ video.description|truncatewords:15 }}
+                            </p>
+                            {% endif %}
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <a href="{{ video.url }}" target="_blank" 
+                                   class="btn btn-danger btn-sm">
+                                    ▶️ Watch on YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% elif query %}
+    <div class="alert alert-warning text-center p-5">
+        <h4>❌ No videos found</h4>
+        <p class="text-muted">Try searching with different keywords</p>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center p-5">
+        <h4>🎬 Search for videos</h4>
+        <p class="text-muted">Enter a song name, artist, or music video to get started</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

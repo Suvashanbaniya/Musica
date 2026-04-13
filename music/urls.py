@@ -36,7 +36,7 @@ urlpatterns = [
     # =====================================================
     # YouTube Features
     # =====================================================
-    path('youtube-search/', views.youtube_search, name='youtube_search'),
+    path('youtube-search/', views.search_youtube, name='search_youtube'),
     path('search/', views.search_video, name='search_video'),
     
     

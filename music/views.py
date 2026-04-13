@@ -16,6 +16,9 @@ import json
 
 
 
+
+
+
 #spotify service instance
 def search_spotify(request):
     """Search Last.fm for songs (FREE API - no premium needed)"""
@@ -62,11 +65,10 @@ def search_spotify(request):
 # =====================================================
 # YouTube API - Search for Videos
 # =====================================================
-def search_youtube(query, max_results=10):
-    """
-    Search YouTube for videos using API
-    Returns list of videos with ID, title, description
-    """
+# =====================================================
+# YouTube API HELPER (RENAMED ✅)
+# =====================================================
+def search_youtube_api(query, max_results=10):
     try:
         youtube = build(
             "youtube",
@@ -83,25 +85,27 @@ def search_youtube(query, max_results=10):
         )
 
         response = request.execute()
-        
+
         videos = []
         for item in response.get('items', []):
+            video_id = item['id']['videoId']
+
             video = {
-                'video_id': item['id']['videoId'],
+                'video_id': video_id,
                 'title': item['snippet']['title'],
                 'description': item['snippet']['description'],
-                'thumbnail': item['snippet']['thumbnails'].get('medium', {}).get('url', ''),
+                'image': item['snippet']['thumbnails'].get('medium', {}).get('url', ''),
                 'channel': item['snippet']['channelTitle'],
+                'url': f"https://www.youtube.com/watch?v={video_id}",  # ✅ ADD THIS LINE
             }
             videos.append(video)
-        
+
         print(f"✅ Found {len(videos)} videos for: {query}")
         return videos
-    
+
     except Exception as e:
         print(f"❌ YouTube API Error: {e}")
         return []
-
 
 # =====================================================
 # Authentication Views
@@ -483,26 +487,34 @@ def like_song(request, id):
 # =====================================================
 # YouTube Search Page (View)
 # =====================================================
-def youtube_search(request):
+# =====================================================
+# YouTube Search Page (VIEW)
+# =====================================================
+def search_youtube(request):
     """
     Display YouTube search page and handle searches
     """
+    query = request.GET.get('q', '').strip()
     results = []
-    query = request.GET.get('q', '')
     error_message = None
-    
+
+    print(f"🔎 YOUTUBE QUERY: {query}")
+
     if query:
-        results = search_youtube(query, max_results=10)
+        results = search_youtube_api(query, max_results=10)
+
         if not results:
-            error_message = "No videos found or API error occurred"
-    
+            error_message = f"No videos found for '{query}'"
+    else:
+        error_message = "Please enter a search query"
+
     context = {
         'query': query,
         'results': results,
         'error_message': error_message,
     }
-    return render(request, 'music/youtube_search.html', context)
 
+    return render(request, 'search_youtube.html', context)
 
 # =====================================================
 # API Endpoints
@@ -520,7 +532,7 @@ def api_search_youtube(request):
             'error': 'Search query too short'
         })
     
-    videos = search_youtube(query, max_results=10)
+    videos = search_youtube_api(query, max_results=10)
     
     return JsonResponse({
         'success': True,
@@ -603,7 +615,7 @@ def search_video(request):
         print(f"DEBUG: Database search for '{query}' - Found {songs.count()} results")
         
         # Also search YouTube
-        youtube_results = search_youtube(query, max_results=5)
+        youtube_results = search_youtube_api(query, max_results=5)
     
     context = {
         'query': query,
