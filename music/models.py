@@ -61,7 +61,7 @@ class Song(models.Model):
     creator = models.ForeignKey(Creator, on_delete=models.CASCADE, related_name='songs', blank=True, null=True)
 
     lyrics = models.TextField(blank=True, null=True)
-
+    chords = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='songs/', blank=True, null=True)
 
     youtube_link = models.URLField(blank=True)

@@ -246,6 +246,7 @@ def upload_video(request):
         youtube_link = request.POST.get('youtube_link', '')
         lyrics = request.POST.get('lyrics', '')
         artist_name = request.POST.get('artist', '')
+        chords = request.POST.get('chords', '')
         image = request.FILES.get('image', None)
         
         if not title or not youtube_link:
@@ -267,6 +268,7 @@ def upload_video(request):
                 title=title,
                 youtube_link=youtube_link,
                 lyrics=lyrics,
+                chords = chords,
                 artist=artist,
                 image=image,
                 creator=request.user.creator_profile

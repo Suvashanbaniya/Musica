@@ -10,7 +10,7 @@
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
                         <h1 class="card-title" style="color: var(--accent-pink); font-size: 2.5rem;">🎬 Become a Creator</h1>
-                        <p class="text-muted">Share your favorite music with the world and earn points!</p>
+                        <p style="color: rgba(255,255,255,0.6);">Share your favorite music with the world and earn points!</p>
                     </div>
 
                     <!-- Benefits Section -->
@@ -18,17 +18,17 @@
                         <div class="col-md-4 text-center">
                             <div style="font-size: 2rem; margin-bottom: 1rem;">🎵</div>
                             <h5>Upload Videos</h5>
-                            <p class="text-muted small">Upload YouTube videos to our platform</p>
+                            <p class="small" style="color: rgba(255,255,255,0.6);">Upload YouTube videos to our platform</p>
                         </div>
                         <div class="col-md-4 text-center">
                             <div style="font-size: 2rem; margin-bottom: 1rem;">⭐</div>
                             <h5>Earn Points</h5>
-                            <p class="text-muted small">Get 10 points per video uploaded</p>
+                            <p class="small" style="color: rgba(255,255,255,0.6);">Get 10 points per video uploaded</p>
                         </div>
                         <div class="col-md-4 text-center">
                             <div style="font-size: 2rem; margin-bottom: 1rem;">🏆</div>
                             <h5>Get Featured</h5>
-                            <p class="text-muted small">Top 3 creators featured on homepage</p>
+                            <p class="small" style="color: rgba(255,255,255,0.6);">Top 3 creators featured on homepage</p>
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@
                                 rows="5"
                                 placeholder="Tell us about yourself! What kind of music do you like? What's your story?"
                                 required></textarea>
-                            <small class="text-muted d-block mt-2">
+                            <small class="d-block mt-2" style="color: rgba(255,255,255,0.6);">
                                 Share what makes you unique as a creator (250-500 characters recommended)
                             </small>
                         </div>
@@ -60,7 +60,6 @@
                         <div class="mb-4">
                             <label for="profile_image" class="form-label">
                                 <strong>🖼️ Profile Picture</strong>
-                              
                             </label>
                             <input 
                                 type="file" 
@@ -68,7 +67,7 @@
                                 class="form-control" 
                                 id="profile_image"
                                 accept="image/*">
-                            <small class="text-muted d-block mt-2">
+                            <small class="d-block mt-2" style="color: rgba(255,255,255,0.6);">
                                 Upload a clear profile picture (JPG, PNG). Max 5MB.
                             </small>
                         </div>
@@ -96,9 +95,9 @@
                     <hr class="my-4">
 
                     <!-- Already Creator -->
-                    <p class="text-center text-muted">
+                    <p class="text-center" style="color: rgba(255,255,255,0.6);">
                         Already a creator? 
-                        <a href="{% url 'creator_dashboard' %}" class="text-decoration-none" style="color: var(--accent-pink); font-weight: bold;">
+                        <a href__="{% url 'creator_dashboard' %}" class="text-decoration-none" style="color: var(--accent-pink); font-weight: bold;">
                             Go to Dashboard →
                         </a>
                     </p>
@@ -127,7 +126,7 @@
                                     {% endif %}
                                     <h6>{{ creator.user.username }}</h6>
                                     <p style="color: var(--accent-pink); font-weight: bold;">{{ creator.total_points }} points</p>
-                                    <small class="text-muted">{{ creator.total_videos }} videos</small>
+                                    <small style="color: rgba(255,255,255,0.6);">{{ creator.total_videos }} videos</small>
                                 </div>
                             </div>
                             {% endfor %}

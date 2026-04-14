@@ -8,7 +8,7 @@
     <div class="row mb-5 mt-4">
         <div class="col-md-12">
             <h1 style="color: var(--accent-pink); font-size: 2.5rem;">🎬 Creator Dashboard</h1>
-            <p class="text-muted">Welcome back, <strong>{{ creator.user.username }}</strong>!</p>
+            <p style="color: rgba(255,255,255,0.6);">Welcome back, <strong>{{ creator.user.username }}</strong>!</p>
         </div>
     </div>
 
@@ -19,9 +19,9 @@
             <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--accent-pink);">
                 <div class="card-body text-center p-4">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">⭐</div>
-                    <h6 class="text-muted">Total Points</h6>
+                    <h6 style="color: rgba(255,255,255,0.6);">Total Points</h6>
                     <h2 style="color: var(--accent-pink); font-weight: bold;">{{ creator.total_points }}</h2>
-                    <small class="text-muted">points earned</small>
+                    <small style="color: rgba(255,255,255,0.6);">points earned</small>
                 </div>
             </div>
         </div>
@@ -31,9 +31,9 @@
             <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--light-pink);">
                 <div class="card-body text-center p-4">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎵</div>
-                    <h6 class="text-muted">Total Videos</h6>
+                    <h6 style="color: rgba(255,255,255,0.6);">Total Videos</h6>
                     <h2 style="color: var(--light-pink); font-weight: bold;">{{ creator.total_videos }}</h2>
-                    <small class="text-muted">videos uploaded</small>
+                    <small style="color: rgba(255,255,255,0.6);">videos uploaded</small>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
             <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid #ff69b4;">
                 <div class="card-body text-center p-4">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏆</div>
-                    <h6 class="text-muted">Your Rank</h6>
+                    <h6 style="color: rgba(255,255,255,0.6);">Your Rank</h6>
                     {% if rank %}
                         <h2 style="color: #ff69b4; font-weight: bold;">
                             #{{ rank }}
@@ -54,11 +54,11 @@
                         {% if rank <= 3 %}
                         <small style="color: var(--accent-pink); font-weight: bold;">Featured! 🌟</small>
                         {% else %}
-                        <small class="text-muted">of all creators</small>
+                        <small style="color: rgba(255,255,255,0.6);">of all creators</small>
                         {% endif %}
                     {% else %}
                     <h2 style="color: #ff69b4; font-weight: bold;">-</h2>
-                    <small class="text-muted">Upload videos to rank</small>
+                    <small style="color: rgba(255,255,255,0.6);">Upload videos to rank</small>
                     {% endif %}
                 </div>
             </div>
@@ -69,13 +69,13 @@
             <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--light-pink);">
                 <div class="card-body text-center p-4">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
-                    <h6 class="text-muted">Next Milestone</h6>
+                    <h6 style="color: rgba(255,255,255,0.6);">Next Milestone</h6>
                     {% if creator.total_points < 100 %}
                         <h2 style="color: var(--light-pink); font-weight: bold;">{{ 100|add:creator.total_points|add:0|add:0 }}</h2>
-                        <small class="text-muted">100 point goal</small>
+                        <small style="color: rgba(255,255,255,0.6);">100 point goal</small>
                     {% elif creator.total_points < 200 %}
                         <h2 style="color: var(--light-pink); font-weight: bold;">{{ 200|add:creator.total_points|add:0|add:0 }}</h2>
-                        <small class="text-muted">200 point goal</small>
+                        <small style="color: rgba(255,255,255,0.6);">200 point goal</small>
                     {% else %}
                         <h2 style="color: var(--accent-pink); font-weight: bold;">🌟</h2>
                         <small style="color: var(--accent-pink);">Legend Status!</small>
@@ -118,14 +118,14 @@
                     {% endif %}
                     
                     <h4>{{ creator.user.username }}</h4>
-                    <p class="text-muted">@{{ creator.user.email }}</p>
+                    <p style="color: rgba(255,255,255,0.6);">@{{ creator.user.email }}</p>
                     
                     {% if creator.bio %}
                     <p class="mt-3">{{ creator.bio }}</p>
                     {% endif %}
                     
                     <div class="mt-4">
-                        <a href="#" class="btn btn-primary btn-sm">Edit Profile</a>
+                        <a href__="#" class="btn btn-primary btn-sm">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -136,8 +136,8 @@
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <h5 class="card-title">📤 Upload New Video</h5>
-                    <p class="text-muted">Add a new YouTube video to your collection and earn 10 points!</p>
-                    <a href="{% url 'upload_video' %}" class="btn btn-primary">
+                    <p style="color: rgba(255,255,255,0.6);">Add a new YouTube video to your collection and earn 10 points!</p>
+                    <a href__="{% url 'upload_video' %}" class="btn btn-primary">
                         ➕ Upload Video
                     </a>
                 </div>
@@ -146,8 +146,8 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h5 class="card-title">🏆 View Leaderboard</h5>
-                    <p class="text-muted">See how you rank against other creators worldwide.</p>
-                    <a href="{% url 'leaderboard' %}" class="btn btn-outline-danger">
+                    <p style="color: rgba(255,255,255,0.6);">See how you rank against other creators worldwide.</p>
+                    <a href__="{% url 'leaderboard' %}" class="btn btn-outline-danger">
                         View Top Creators →
                     </a>
                 </div>
@@ -177,21 +177,21 @@
                                 <h5 class="card-title">{{ song.title }}</h5>
                                 
                                 {% if song.artist %}
-                                <p class="card-text text-muted small">
+                                <p class="card-text small" style="color: rgba(255,255,255,0.6);">
                                     <strong>Artist:</strong> {{ song.artist.name }}
                                 </p>
                                 {% endif %}
                                 
-                                <p class="card-text text-muted small">
+                                <p class="card-text small" style="color: rgba(255,255,255,0.6);">
                                     <strong>Views:</strong> {{ song.views }}
                                 </p>
 
-                                <p class="card-text text-muted small">
+                                <p class="card-text small" style="color: rgba(255,255,255,0.6);">
                                     <strong>Uploaded:</strong> {{ song.created_at|date:"M d, Y" }}
                                 </p>
 
                                 <div class="d-grid gap-2 mt-3">
-                                    <a href="{% url 'song_detail' song.id %}" class="btn btn-primary btn-sm">
+                                    <a href__="{% url 'song_detail' song.id %}" class="btn btn-primary btn-sm">
                                         View Song ▶
                                     </a>
                                 </div>
@@ -203,8 +203,8 @@
             {% else %}
                 <div class="alert alert-info text-center p-5">
                     <h4>📭 No Videos Yet</h4>
-                    <p class="text-muted">You haven't uploaded any videos yet. Start by uploading your first video!</p>
-                    <a href="{% url 'upload_video' %}" class="btn btn-primary mt-3">
+                    <p style="color: rgba(255,255,255,0.6);">You haven't uploaded any videos yet. Start by uploading your first video!</p>
+                    <a href__="{% url 'upload_video' %}" class="btn btn-primary mt-3">
                         Upload Your First Video
                     </a>
                 </div>
@@ -221,15 +221,15 @@
                     <div class="row mt-3">
                         <div class="col-md-4">
                             <h6>📤 Upload Video</h6>
-                            <p class="text-muted">Each video you upload earns you <strong style="color: var(--accent-pink);">10 points</strong></p>
+                            <p style="color: rgba(255,255,255,0.6);">Each video you upload earns you <strong style="color: var(--accent-pink);">10 points</strong></p>
                         </div>
                         <div class="col-md-4">
                             <h6>🏆 Get Featured</h6>
-                            <p class="text-muted">Top 3 creators with most points are <strong style="color: var(--accent-pink);">featured on homepage</strong></p>
+                            <p style="color: rgba(255,255,255,0.6);">Top 3 creators with most points are <strong style="color: var(--accent-pink);">featured on homepage</strong></p>
                         </div>
                         <div class="col-md-4">
                             <h6>🌍 Join Leaderboard</h6>
-                            <p class="text-muted">Compete with creators worldwide on the <strong style="color: var(--accent-pink);">global leaderboard</strong></p>
+                            <p style="color: rgba(255,255,255,0.6);">Compete with creators worldwide on the <strong style="color: var(--accent-pink);">global leaderboard</strong></p>
                         </div>
                     </div>
                 </div>
