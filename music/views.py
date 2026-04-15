@@ -9,9 +9,48 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .spotify_service import SpotifyService
 # YouTube API Library
+from django.conf import settings
 from googleapiclient.discovery import build
 import requests
 import json
+
+
+
+
+#music recommendation function
+import requests
+from django.conf import settings
+
+def get_similar_artists(artist_name):
+    url = "http://ws.audioscrobbler.com/2.0/"
+    
+    params = {
+        'method': 'artist.getsimilar',
+        'artist': artist_name,
+        'api_key': settings.LASTFM_API_KEY,
+        'format': 'json',
+        'limit': 5
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        similar = data.get('similarartists', {}).get('artist', [])
+        
+        return [
+            {
+                'name': artist['name'],
+                'image': artist['image'][-1]['#text'] if artist['image'] else ''
+            }
+            for artist in similar
+        ]
+
+    except Exception as e:
+        print("Error fetching similar artists:", e)
+        return []
+
+
 
 
 
@@ -334,34 +373,34 @@ def home(request):
 # Song Detail Page - WITH YOUTUBE API ✅
 # =====================================================
 def song_detail(request, id):
-    """
-    Display song details, lyrics, comments, and YouTube video
-    WITH YouTube API to fetch video metadata
-    """
     song = get_object_or_404(Song, id=id)
 
-    # Increase view count
+    # ✅ Increase view count
     song.views += 1
     song.save()
 
-    # YouTube Data
+    # =========================
+    # 🔥 RECOMMENDATION LOGIC
+    # =========================
+    same_artist = Song.objects.filter(
+        artist=song.artist
+    ).exclude(id=song.id)
+
+    popular = Song.objects.exclude(id=song.id).order_by('-views')
+
+    recommended_songs = (same_artist | popular).distinct()[:8]
+
+    # =========================
+    # 🎬 YOUTUBE DATA
+    # =========================
     video_data = None
     youtube_id = None
     error_message = None
 
-    # ✅ VALIDATE AND PROCESS YOUTUBE ID
     if song.youtube_id:
-        # Clean up the YouTube ID (remove any extra characters)
         youtube_id = song.youtube_id.strip()
-        
-        print(f"DEBUG: Song '{song.title}'")
-        print(f"  youtube_id from DB: '{song.youtube_id}'")
-        print(f"  youtube_id stripped: '{youtube_id}'")
-        print(f"  Length: {len(youtube_id)}")
-        
-        # Validate format (11 characters)
+
         if len(youtube_id) == 11:
-            # ✅ FETCH VIDEO DETAILS FROM YOUTUBE API
             try:
                 youtube = build(
                     "youtube",
@@ -375,43 +414,27 @@ def song_detail(request, id):
                 )
 
                 response = request_obj.execute()
-                
-                if response.get('items'):
-                    item = response['items'][0]
-                    video_data = item
-                    print(f"  ✅ API call successful - fetched video data")
-                else:
-                    print(f"  ⚠️ Video not found in API")
-                    # Video will still play, just no metadata
-                    video_data = None
-            
-            except Exception as e:
-                print(f"  ⚠️ API Error: {e}")
-                # Video will still play even if API fails
-                video_data = None
-                
-        else:
-            error_message = f"Invalid YouTube ID format: {youtube_id} (must be 11 characters)"
-            print(f"  ❌ Invalid video ID - wrong length")
-    else:
-        error_message = "No YouTube video ID found for this song"
-        print(f"DEBUG: No youtube_id for song: {song.title}")
 
-    # ✅ COMMENT SUBMISSION - NO LOGIN REQUIRED
+                if response.get('items'):
+                    video_data = response['items'][0]
+
+            except Exception as e:
+                print(f"⚠️ YouTube API Error: {e}")
+        else:
+            error_message = f"Invalid YouTube ID: {youtube_id}"
+    else:
+        error_message = "No YouTube video ID found"
+
+    # =========================
+    # 💬 COMMENTS
+    # =========================
     if request.method == 'POST':
         content = request.POST.get("text")
 
         if content:
-            # Get or create anonymous user
-            username = request.POST.get("username", "Anonymous")
-            if not username or username.strip() == "":
-                username = "Anonymous"
-            
-            # Try to use logged-in user, otherwise create/use anonymous
             if request.user.is_authenticated:
                 user = request.user
             else:
-                # Create an anonymous user or use existing one
                 user, created = User.objects.get_or_create(
                     username="anonymous_user",
                     defaults={
@@ -419,21 +442,25 @@ def song_detail(request, id):
                         'email': 'anonymous@example.com'
                     }
                 )
-            
+
             Comment.objects.create(
                 song=song,
                 user=user,
                 content=content
             )
-            
-            print(f"DEBUG: Comment added by {user.username}")
+
             return redirect('song_detail', id=id)
 
     comments = song.comments.order_by('-created_at')
-    
-    # Check if user liked the song
+
+    # =========================
+    # ❤️ LIKE SYSTEM
+    # =========================
     is_liked = request.user.is_authenticated and request.user in song.likes.all()
 
+    # =========================
+    # ✅ FINAL CONTEXT (FIXED)
+    # =========================
     context = {
         'song': song,
         'comments': comments,
@@ -441,10 +468,10 @@ def song_detail(request, id):
         'youtube_id': youtube_id,
         'error_message': error_message,
         'is_liked': is_liked,
+        'recommended_songs': recommended_songs,  # 🔥 FIX HERE
     }
 
     return render(request, 'song_detail.html', context)
-
 
 # =====================================================
 # Artist Detail Page

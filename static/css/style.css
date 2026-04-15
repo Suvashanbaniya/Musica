@@ -867,5 +867,43 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
 }
+/* for similar artists section */
+.similar-artists {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.artist-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.artist-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.recommended-section {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.song-card {
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #1e293b;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.song-card:hover {
+    background: #334155;
+}
 
 /* ===================================================== */
