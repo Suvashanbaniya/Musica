@@ -906,4 +906,121 @@ h1, h2, h3, h4, h5, h6 {
     background: #334155;
 }
 
+
+
+.comment-advanced {
+    background: #222;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.comment-advanced span {
+    background: #ff4b2b;
+    padding: 3px 8px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.comment-advanced:hover {
+    background: #444;
+    transform: translateY(-2px);
+}
+/* ================= COMMENT SECTION ================= */
+
+.comment-section {
+    margin-top: 30px;
+}
+
+/* Form */
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #111;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.comment-form input,
+.comment-form textarea {
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 8px;
+    background: #1a1a1a;
+    color: white;
+}
+
+.comment-form textarea {
+    resize: none;
+    height: 80px;
+}
+
+/* Button */
+.comment-submit {
+    background: linear-gradient(45deg, #ff006e, #8338ec);
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.comment-submit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,0,110,0.5);
+}
+
+/* Comment list */
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-card {
+    background: #111;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.comment-card:hover {
+    background: #1a1a1a;
+}
+
+/* Header */
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.comment-user {
+    color: #ff006e;
+    font-weight: bold;
+}
+
+.comment-time {
+    color: gray;
+}
+
+/* Content */
+.comment-text {
+    font-size: 14px;
+}
+
+/* Toggle button */
+.comment-toggle {
+    margin-top: 20px;
+}
+
 /* ===================================================== */
