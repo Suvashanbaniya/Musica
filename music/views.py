@@ -292,6 +292,10 @@ def upload_video(request):
             return render(request, 'creator/upload_video.html', {
                 'error': 'Title and YouTube link are required'
             })
+        if not youtube_link or ("youtube" not in youtube_link and "youtu.be" not in youtube_link):
+            return render(request, 'creator/upload_video.html', {
+                'error': 'Enter a valid YouTube URL'
+          })    
         
         try:
             # Get or create artist
@@ -397,7 +401,7 @@ def song_detail(request, id):
     youtube_id = None
     error_message = None
 
-    if song.youtube_id:
+    if song.youtube_id and len(song.youtube_id) == 11:
         youtube_id = song.youtube_id.strip()
 
         if len(youtube_id) == 11:
@@ -417,6 +421,8 @@ def song_detail(request, id):
 
                 if response.get('items'):
                     video_data = response['items'][0]
+                if not response.get('items'):
+                    youtube_id = None    
 
             except Exception as e:
                 print(f"⚠️ YouTube API Error: {e}")

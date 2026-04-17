@@ -151,6 +151,7 @@ class Song(models.Model):
     def save(self, *args, **kwargs):
         if self.youtube_link:
             self.youtube_id = self.extract_video_id(self.youtube_link)
+            print(f"Debug: Extracted YouTube ID - {self.youtube_id} ")
         
         # Add points to creator when song is created
         if self.pk is None and self.creator:

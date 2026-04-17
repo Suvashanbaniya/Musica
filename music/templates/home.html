@@ -3,161 +3,376 @@
 {% block title %}Home - Sangeet Music{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Featured Top 3 Creators Section -->
+<style>
+    body { 
+        margin-top: 80px;
+        background: linear-gradient(135deg, #0f1419 0%, #1a2633 100%);
+    }
+    
+    .gradient-text {
+        background: linear-gradient(135deg, #00d4ff, #0099ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .card-hover {
+        transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3) !important;
+    }
+</style>
+
+<div class="container-fluid" style="padding: 0; background: linear-gradient(180deg, #0f1419 0%, #1a2633 50%, #0f1419 100%);">
+    
+    <!-- HERO SECTION -->
+    <div style="padding: 80px 20px; text-align: center; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 255, 0.05) 100%);">
+        <h1 style="font-size: 3.5rem; font-weight: 900; margin-bottom: 20px;">
+            <span class="gradient-text">🎵 SANGEET</span>
+        </h1>
+        <p style="font-size: 1.3rem; color: #00d4ff; margin-bottom: 10px;">Stream • Share • Create</p>
+        <p style="color: #a0aec0; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            The ultimate platform for music lovers and creators. Discover amazing songs, build your creator profile, and climb the leaderboard.
+        </p>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            {% if user.is_authenticated %}
+                {% if user.creator_profile %}
+                <a href="{% url 'creator_dashboard' %}" class="btn btn-lg" style="background: linear-gradient(135deg, #00d4ff, #0099ff); color: white; border: none; font-weight: bold; padding: 12px 40px;">
+                    🎤 Creator Dashboard
+                </a>
+                {% else %}
+                <a href="{% url 'become_creator' %}" class="btn btn-lg" style="background: linear-gradient(135deg, #00d4ff, #0099ff); color: white; border: none; font-weight: bold; padding: 12px 40px;">
+                    ➕ Become Creator
+                </a>
+                {% endif %}
+                <a href="{% url 'leaderboard' %}" class="btn btn-lg btn-outline-primary">
+                    🏆 Leaderboard
+                </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-lg" style="background: linear-gradient(135deg, #00d4ff, #0099ff); color: white; border: none; font-weight: bold; padding: 12px 40px;">
+                🔐 Login
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-lg btn-outline-info">
+                📝 Register
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- FEATURED TOP CREATORS -->
     {% if top_creators %}
-    <div class="row mb-5">
-        <div class="col-md-12">
-            <div class="text-center mb-5">
-                <h2 style="color: var(--accent-pink); font-size: 2.2rem;">🌟 Featured Top Creators</h2>
-                <p class="text-muted">The most talented music curators on Sangeet</p>
+    <div style="padding: 60px 20px; max-width: 1400px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 15px;">
+                <span class="gradient-text">🌟 Featured Top Creators</span>
+            </h2>
+            <p style="color: #a0aec0; font-size: 1.1rem;">The most talented music curators on Sangeet</p>
+        </div>
+
+        <div class="row g-4">
+            {% for creator in top_creators %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-hover shadow-lg" style="
+                    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 255, 0.05) 100%);
+                    border: 2px solid rgba(0, 212, 255, 0.3);
+                    border-radius: 20px;
+                    overflow: hidden;
+                ">
+                    <!-- Rank Badge -->
+                    <div style="
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #00d4ff, #0099ff);
+                        color: white;
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 1.5rem;
+                        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+                        z-index: 10;
+                    ">
+                        {% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% else %}🥉{% endif %}
+                    </div>
+
+                    <div class="card-body p-4" style="text-align: center; position: relative;">
+                        <!-- Profile Image -->
+                        {% if creator.profile_image %}
+                        <img src="{{ creator.profile_image.url }}" style="
+                            width: 140px;
+                            height: 140px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            margin-bottom: 20px;
+                            border: 4px solid #00d4ff;
+                            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+                        ">
+                        {% else %}
+                        <div style="
+                            width: 140px;
+                            height: 140px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, #00d4ff, #0099ff);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto 20px;
+                            color: white;
+                            font-size: 3.5rem;
+                            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+                        ">👤</div>
+                        {% endif %}
+
+                        <!-- Creator Name -->
+                        <h5 style="color: #00d4ff; font-weight: 800; margin-bottom: 5px; font-size: 1.3rem;">
+                            {{ creator.user.username }}
+                        </h5>
+                        <p style="color: #a0aec0; font-size: 0.9rem; margin-bottom: 20px;">
+                            Music Curator
+                        </p>
+
+                        <!-- Stats -->
+                        <div style="
+                            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 153, 255, 0.1) 100%);
+                            border-radius: 15px;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid rgba(0, 212, 255, 0.2);
+                        ">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h4 style="color: #00d4ff; font-weight: 900; margin: 0;">{{ creator.total_points }}</h4>
+                                    <p style="color: #a0aec0; margin: 5px 0 0 0; font-size: 0.85rem;">Points</p>
+                                </div>
+                                <div class="col-6">
+                                    <h4 style="color: #00d4ff; font-weight: 900; margin: 0;">{{ creator.total_videos }}</h4>
+                                    <p style="color: #a0aec0; margin: 5px 0 0 0; font-size: 0.85rem;">Videos</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bio -->
+                        {% if creator.bio %}
+                        <p style="color: #cbd5e0; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6;">
+                            {{ creator.bio|truncatewords:20 }}
+                        </p>
+                        {% endif %}
+
+                        <!-- Button -->
+                        <a href="{% url 'leaderboard' %}" class="btn w-100" style="
+                            background: linear-gradient(135deg, #00d4ff, #0099ff);
+                            color: white;
+                            border: none;
+                            font-weight: bold;
+                            padding: 10px;
+                            border-radius: 10px;
+                        ">
+                            View Profile →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{% url 'leaderboard' %}" class="btn btn-lg" style="
+                background: linear-gradient(135deg, #00d4ff, #0099ff);
+                color: white;
+                border: none;
+                font-weight: bold;
+                padding: 15px 50px;
+            ">
+                🏆 View Full Leaderboard
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- LATEST SONGS SECTION -->
+    <div style="padding: 60px 20px; background: linear-gradient(135deg, rgba(0, 99, 255, 0.05) 0%, rgba(0, 153, 255, 0.02) 100%);">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 15px;">
+                    <span class="gradient-text">🎵 Latest Songs</span>
+                </h2>
+                <p style="color: #a0aec0; font-size: 1.1rem;">Discover and enjoy amazing music from our community</p>
             </div>
 
-            <div class="row">
-                {% for creator in top_creators %}
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.1) 100%); border: 2px solid var(--accent-pink); border-radius: 15px;">
-                        <div class="card-body text-center p-4">
-                            <!-- Rank Badge -->
-                            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem;">
-                                {% if forloop.counter == 1 %}#1{% elif forloop.counter == 2 %}#2{% else %}#3{% endif %}
-                            </div>
-
-                            <!-- Profile Image -->
-                            {% if creator.profile_image %}
-                                <img src="{{ creator.profile_image.url }}" alt="{{ creator.user.username }}" 
-                                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-top: 2rem; margin-bottom: 1rem; border: 4px solid var(--accent-pink);">
+            {% if songs %}
+            <div class="row g-4">
+                {% for song in songs %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="card card-hover shadow-lg" style="
+                        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 153, 255, 0.05) 100%);
+                        border: 1px solid rgba(0, 212, 255, 0.2);
+                        border-radius: 15px;
+                        overflow: hidden;
+                    ">
+                        <!-- Thumbnail -->
+                        <div style="position: relative; padding-bottom: 100%; overflow: hidden;">
+                            {% if song.image %}
+                            <img src="{{ song.image.url }}" style="
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            ">
                             {% else %}
-                                <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-pink), var(--light-pink)); display: flex; align-items: center; justify-content: center; margin: 2rem auto 1rem; color: white; font-size: 3rem;">
-                                    👤
-                                </div>
+                            <div style="
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(135deg, #00d4ff, #0099ff);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-size: 2.5rem;
+                            ">🎵</div>
                             {% endif %}
-
-                            <!-- Creator Info -->
-                            <h5 style="color: var(--text-light); margin-bottom: 0.5rem;">{{ creator.user.username }}</h5>
-                            <p class="text-muted small mb-2">@{{ creator.user.email }}</p>
-
-                            <!-- Points and Videos -->
-                            <div style="background: rgba(255, 0, 110, 0.1); border-radius: 10px; padding: 1rem; margin: 1rem 0;">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h5 style="color: var(--accent-pink); font-weight: bold;">{{ creator.total_points }}</h5>
-                                        <small class="text-muted">Points</small>
-                                    </div>
-                                    <div class="col-6">
-                                        <h5 style="color: var(--light-pink); font-weight: bold;">{{ creator.total_videos }}</h5>
-                                        <small class="text-muted">Videos</small>
-                                    </div>
-                                </div>
+                            
+                            <!-- Play Button Overlay -->
+                            <div style="
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: rgba(0, 0, 0, 0.5);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                opacity: 0;
+                                transition: opacity 0.3s;
+                            " class="play-overlay">
+                                <div style="
+                                    width: 60px;
+                                    height: 60px;
+                                    border-radius: 50%;
+                                    background: linear-gradient(135deg, #00d4ff, #0099ff);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    color: white;
+                                    font-size: 1.5rem;
+                                ">▶</div>
                             </div>
+                        </div>
 
-                            <!-- Creator Bio -->
-                            {% if creator.bio %}
-                            <p class="text-muted small" style="margin: 1rem 0;">{{ creator.bio|truncatewords:15 }}</p>
+                        <!-- Card Body -->
+                        <div class="card-body p-3">
+                            <h6 style="color: #00d4ff; font-weight: 800; margin-bottom: 5px; margin: 0;">{{ song.title }}</h6>
+                            <p style="color: #a0aec0; font-size: 0.85rem; margin: 5px 0;">
+                                <strong>{{ song.artist.name }}</strong>
+                            </p>
+
+                            {% if song.creator %}
+                            <p style="color: #00d4ff; font-size: 0.8rem; margin: 5px 0;">
+                                By: {{ song.creator.user.username }}
+                            </p>
                             {% endif %}
 
-                            <!-- View Profile Button -->
-                            <a href="{% url 'leaderboard' %}" class="btn btn-primary btn-sm w-100 mt-2">
-                                View All Creators →
+                            <p style="color: #a0aec0; font-size: 0.8rem; margin: 10px 0;">
+                                👁️ {{ song.views }} • ❤️ {{ song.total_likes }}
+                            </p>
+
+                            <a href="{% url 'song_detail' song.id %}" class="btn btn-sm w-100" style="
+                                background: linear-gradient(135deg, #00d4ff, #0099ff);
+                                color: white;
+                                border: none;
+                                font-weight: bold;
+                                margin-top: 10px;
+                            ">
+                                Play Now ▶
                             </a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-
-            <!-- View Leaderboard Button -->
-            <div class="text-center mb-5">
-                <a href="{% url 'leaderboard' %}" class="btn btn-outline-danger btn-lg">
-                    🏆 View Full Leaderboard
-                </a>
+            {% else %}
+            <div style="
+                text-align: center;
+                padding: 60px 20px;
+                background: rgba(0, 212, 255, 0.05);
+                border-radius: 20px;
+                border: 2px solid rgba(0, 212, 255, 0.2);
+            ">
+                <p style="color: #a0aec0; font-size: 1.1rem;">No songs found. Be the first to upload!</p>
             </div>
+            {% endif %}
         </div>
     </div>
 
-    <hr style="border-color: var(--border-color); margin: 3rem 0;">
-    {% endif %}
-
-    <!-- Latest Songs Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h1 class="mb-2" style="color: var(--accent-pink); font-size: 2.5rem;">🎵 Latest Songs</h1>
-            <p class="text-muted">Discover and enjoy amazing music</p>
-        </div>
-    </div>
-
-    {% if songs %}
-        <div class="row">
-            {% for song in songs %}
-            <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-                <div class="card shadow-sm h-100">
-                    {% if song.image %}
-                    <img src="{{ song.image.url }}" class="card-img-top" alt="{{ song.title }}">
-                    {% else %}
-                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
-                         style="height: 200px;">
-                        <span class="text-white" style="font-size: 3rem;">🎵</span>
-                    </div>
-                    {% endif %}
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{ song.title }}</h5>
-                        <p class="card-text text-muted small">
-                            <strong>Artist:</strong> 
-                            <a href="{% url 'artist_detail' song.artist.id %}" class="text-decoration-none">
-                                {{ song.artist.name }}
-                            </a>
-                        </p>
-
-                        {% if song.creator %}
-                        <p class="card-text text-muted small">
-                            <strong>Creator:</strong> 
-                            <span style="color: var(--accent-pink);">{{ song.creator.user.username }}</span>
-                        </p>
-                        {% endif %}
-
-                        <p class="card-text text-muted small">
-                            <strong>Views:</strong> {{ song.views }}
-                        </p>
-
-                        <div class="d-grid gap-2">
-                            <a href="{% url 'song_detail' song.id %}" class="btn btn-primary btn-sm">
-                                Play Now ▶
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">No songs found</h4>
-            <p>
-                {% if request.GET.q %}
-                    No songs matching "{{ request.GET.q }}" were found.
-                {% else %}
-                    Start by adding some songs to your library.
-                {% endif %}
+    <!-- CTA SECTION -->
+    <div style="padding: 80px 20px; text-align: center;">
+        <div style="
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 153, 255, 0.1) 100%);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+        ">
+            <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 20px;">
+                <span class="gradient-text">🎬 Ready to Share Your Music?</span>
+            </h3>
+            <p style="color: #a0aec0; margin-bottom: 30px; font-size: 1.1rem;">
+                Become a creator, upload your favorite songs, earn points, and get featured!
             </p>
-        </div>
-    {% endif %}
-
-    <!-- Become Creator CTA -->
-    <div class="row mt-5 mb-5">
-        <div class="col-md-12">
-            <div class="card shadow" style="background: linear-gradient(135deg, var(--secondary-dark-blue) 0%, rgba(255, 0, 110, 0.15) 100%); border: 2px solid var(--accent-pink); border-radius: 15px;">
-                <div class="card-body p-5 text-center">
-                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">🎬 Want to Share Your Favorite Music?</h3>
-                    <p class="text-muted" style="font-size: 1.1rem; margin-bottom: 2rem;">
-                        Become a Creator, upload videos, earn points, and get featured on our homepage!
-                    </p>
-                    <a href="{% url 'become_creator' %}" class="btn btn-primary btn-lg">
-                        ✨ Become a Creator Today
-                    </a>
-                </div>
-            </div>
+            
+            {% if user.is_authenticated %}
+                {% if not user.creator_profile %}
+                <a href="{% url 'become_creator' %}" class="btn btn-lg" style="
+                    background: linear-gradient(135deg, #00d4ff, #0099ff);
+                    color: white;
+                    border: none;
+                    font-weight: bold;
+                    padding: 15px 50px;
+                ">
+                    ✨ Become Creator
+                </a>
+                {% endif %}
+            {% else %}
+            <a href="{% url 'register' %}" class="btn btn-lg" style="
+                background: linear-gradient(135deg, #00d4ff, #0099ff);
+                color: white;
+                border: none;
+                font-weight: bold;
+                padding: 15px 50px;
+            ">
+                📝 Create Account
+            </a>
+            {% endif %}
         </div>
     </div>
+
 </div>
+
+<script>
+    // Play button hover effect
+    document.querySelectorAll('.card-hover').forEach(card => {
+        const overlay = card.querySelector('.play-overlay');
+        card.addEventListener('mouseenter', () => {
+            overlay.style.opacity = '1';
+        });
+        card.addEventListener('mouseleave', () => {
+            overlay.style.opacity = '0';
+        });
+    });
+</script>
+
 {% endblock %}
